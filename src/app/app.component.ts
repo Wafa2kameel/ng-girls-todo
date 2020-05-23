@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TodoItem } from './interfaces/todo-item';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'todo-list';
     
-  todoList = [
+  todoList: TodoItem[] = [
     { title: 'install NodeJS' },
     { title: 'install Angular CLI' },
     { title: 'create new app' },
