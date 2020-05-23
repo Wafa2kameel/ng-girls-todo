@@ -10,7 +10,7 @@
   <div class="content" role="main">
 
 
-    <app-input-button-unit></app-input-button-unit>
+    <app-input-button-unit (submit)="addItem($event)"></app-input-button-unit>
     <ul>
       <li *ngFor="let todoItem of todoList">
         <app-todo-item [item]="todoItem"></app-todo-item>

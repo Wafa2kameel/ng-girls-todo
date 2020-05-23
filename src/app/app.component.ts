@@ -25,4 +25,8 @@ export class AppComponent implements OnInit {
      
   }
 
+  addItem(value: string) {
+    this.todoList.push({ title: value });
+  }
+
 }
