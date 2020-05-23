@@ -27,13 +27,26 @@ export class TodoListService {
   }
 
   addItem(item: TodoItem) {
+    if (this.find(item.title, this.todoList)) {
+      alert('It already exists!')
+      return;
+    }
     this.todoList.push(item);
     this.saveList();
   }
 
+  find(nameKey, array: TodoItem[]) {
+    for (let item of array) {
+      if (item.title === nameKey) {
+        return true ;
+      }
+    }
+    return false;
+  }
+
   updateItem(item, changes) {
     const index = this.todoList.indexOf(item);
-    this.todoList[index] = { ...item, ...changes };    
+    this.todoList[index] = { ...item, ...changes };
     this.saveList();
   }
 
