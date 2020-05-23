@@ -1,21 +1,6 @@
- 
+<h1 class="app-title">
+  Welcome to {{ title }}!
+</h1>
 
-<!-- Toolbar -->
-  <div class="toolbar" role="banner">
-    <h1>
-      Welcome to {{ title }}!
-    </h1>
-  </div>
+<app-list-manager></app-list-manager>
 
-  <div class="content" role="main">
-
-
-    <app-input-button-unit (submit)="addItem($event)"></app-input-button-unit>
-    <ul>
-      <li *ngFor="let todoItem of todoList">
-        <app-todo-item [item]="todoItem"></app-todo-item>
-      </li>
-    </ul>
-
-  </div>
- 
