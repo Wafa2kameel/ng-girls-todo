@@ -48,7 +48,7 @@ export class TodoListService {
   }   
 
   updateItem(item: TodoItem, changes) { 
-    return this.http.put(this.databaseUrl +`/${item._id}`,
+    return this.http.put(this.databaseUrl +`/items/${item._id}`,
       JSON.stringify({
         ...item,
         completed: changes
