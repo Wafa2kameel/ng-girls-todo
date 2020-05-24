@@ -1,4 +1,3 @@
-Feel free to fill out:
 
 * my name: Wafaa KAmeel
 * workshop: ngGirls
