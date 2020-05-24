@@ -17,10 +17,11 @@ export class TodoItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  completeItem() { 
+  completeItem() {
+   
     this.update.emit({
-      item: this.item,
-      changes: { completed: !this.item.completed }
+      item: this.item, 
+      changes: !this.item.completed
     });
   }
 

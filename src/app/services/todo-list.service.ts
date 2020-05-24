@@ -1,63 +1,70 @@
 import { Injectable } from '@angular/core';
 import { TodoItem } from '../interfaces/todo-item';
-import { StorageService } from './storage.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
-const todoListStorageKey = 'Todo_List';
-
-const defaultTodoList = [
-  { title: 'install NodeJS' },
-  { title: 'install Angular CLI' },
-  { title: 'create new app' },
-  { title: 'serve app' },
-  { title: 'develop app' },
-  { title: 'deploy app' },
-];
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TodoListService {
-  todoList: TodoItem[];
 
-  constructor(private storageService: StorageService) {
-    this.todoList =
-      storageService.getData(todoListStorageKey) || defaultTodoList;
+  private todoListSubject: Subject<TodoItem[]> = new Subject<TodoItem[]>();
+  private headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+  databaseUrl = environment.databaseUrl;
+
+  constructor(private http: HttpClient) {
+    this.retrieveListFromDataBase();
   }
 
-  saveList() {
-    this.storageService.setData(todoListStorageKey, this.todoList);
-  }
-
-  addItem(item: TodoItem) {
-    if (this.find(item.title, this.todoList)) {
-      alert('It already exists!')
-      return;
-    }
-    this.todoList.push(item);
-    this.saveList();
-  }
-
-  find(nameKey, array: TodoItem[]) {
-    for (let item of array) {
-      if (item.title === nameKey) {
-        return true ;
+  retrieveListFromDataBase() {
+    this.http.get<TodoItem[]>(this.databaseUrl +'/items').subscribe(
+      response => {
+        this.todoListSubject.next(response);
+      },
+      err => {
+        console.log(err);
       }
-    }
-    return false;
-  }
+    );
 
-  updateItem(item, changes) {
-    const index = this.todoList.indexOf(item);
-    this.todoList[index] = { ...item, ...changes };
-    this.saveList();
-  }
-
-  deleteItem(item) {
-    const index = this.todoList.indexOf(item);
-    this.todoList.splice(index, 1);
-    this.saveList();
   }
 
   getTodoList() {
-    return this.todoList;
+
+    return this.todoListSubject.asObservable();
   }
 
+  addItem(item: TodoItem) {
+
+    this.http.post(this.databaseUrl+'/items',
+      JSON.stringify({ title: item.title, completed: item.completed || false }),
+      { headers: this.headers }).subscribe(
+        () => this.retrieveListFromDataBase(),
+        err => {
+          console.log(err);
+        }
+      );
+  }   
+
+  updateItem(item: TodoItem, changes) { 
+    return this.http.put(this.databaseUrl +`/${item._id}`,
+      JSON.stringify({
+        ...item,
+        completed: changes
+      }),
+      { headers: this.headers }).subscribe(
+        () => this.retrieveListFromDataBase()
+      );
+  }
+
+  deleteItem(item: TodoItem) {
+    return this.http.delete(this.databaseUrl +`/items/${item._id}`).subscribe(
+      () => this.retrieveListFromDataBase()
+    );
+  } 
+
+ 
 }
+
+

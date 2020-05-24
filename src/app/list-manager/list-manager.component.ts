@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoItem } from '../interfaces/todo-item';
 import { TodoListService } from '../services/todo-list.service';
+import {  Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-manager',
@@ -9,12 +10,12 @@ import { TodoListService } from '../services/todo-list.service';
 })
 export class ListManagerComponent implements OnInit {
 
-  todoList: TodoItem[];
+  todoList: Observable<TodoItem[]>;
 
   constructor(private todoListService: TodoListService) { }
 
   ngOnInit() {
-    this.todoList = this.todoListService.getTodoList();
+      this.todoList = this.todoListService.getTodoList();
   }
 
   addItem(title: string) {
@@ -26,6 +27,7 @@ export class ListManagerComponent implements OnInit {
   }
 
   updateItem(item, changes) {
+   
     this.todoListService.updateItem(item, changes);
   }
 }
