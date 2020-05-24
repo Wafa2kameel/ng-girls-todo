@@ -31,23 +31,24 @@ export class TodoListService {
   }
 
   getTodoList() {
-
     return this.todoListSubject.asObservable();
   }
 
   addItem(item: TodoItem) {
-
-    this.http.post(this.databaseUrl+'/items',
-      JSON.stringify({ title: item.title, completed: item.completed || false }),
-      { headers: this.headers }).subscribe(
-        () => this.retrieveListFromDataBase(),
-        err => {
-          console.log(err);
-        }
-      );
+    if (item?.title) {
+      this.http.post(this.databaseUrl + '/items',
+        JSON.stringify({ title: item.title, completed: item.completed || false }),
+        { headers: this.headers }).subscribe(
+          () => this.retrieveListFromDataBase(),
+          err => {
+            console.log(err);
+          }
+        );
+    }
   }   
 
-  updateItem(item: TodoItem, changes) { 
+  updateItem(item: TodoItem, changes) {
+    console.log('updateItem');
     return this.http.put(this.databaseUrl +`/items/${item._id}`,
       JSON.stringify({
         ...item,

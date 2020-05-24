@@ -1,10 +1,38 @@
-<input class="todo-input"
+<!--<input class="todo-input"
        placeholder="Add something to do..."
        #inputElementRef
        [(ngModel)]="inputText"
-       (keyup.enter)="submitValue($event.target.value);">
+       (keyup.enter)="submitValue($event.target.value);" required>
 
-<button class="btn"
+<button class="btn"   [disabled]="!inputElementRef.value"
         (click)="submitValue(inputElementRef.value)">
   Save
-</button>
+</button>-->
+<form #itemForm="ngForm" class="form">
+
+  <div class="form-group">
+
+    <input class="todo-input form-control"
+           placeholder="Add something to do..."
+           #todoItem
+
+           name="title"
+           [(ngModel)]="title"
+           (keyup.enter)="submitValue(todoItem.value); todoItem.value = ''"
+           required
+           >
+
+  </div>
+
+  <button class="btn" mat-raised-button [disabled]="!todoItem.value"
+          color="primary"
+          type="submit"
+          (click)="submitValue(todoItem.value); todoItem.value = ''">
+    Save
+  </button>
+
+</form>
+
+
+ 
+
