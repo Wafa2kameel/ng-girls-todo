@@ -1,5 +1,5 @@
 
-* my name: Wafaa KAmeel
+* my name: Wafaa Kameel
 * workshop: ngGirls
 * day: 2020-05-24/23
 
